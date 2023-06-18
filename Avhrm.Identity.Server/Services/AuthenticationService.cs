@@ -11,6 +11,7 @@ using CallContext = ProtoBuf.Grpc.CallContext;
 using Avhrm.Identity.Contracts;
 using Avhrm.Core.Features.Account.Query.GerUserLogin;
 using Avhrm.Core.Common;
+using Microsoft.AspNetCore.Identity;
 
 namespace Avhrm.Identity.Server.Implementation;
 
@@ -36,6 +37,11 @@ public class AuthenticationService : IAuthenticationService
             .FirstOrDefaultAsync(p => p.UserName == request.Username
                                 && p.PasswordHash == hashedPassword);
 
+        var roles = await context.Roles
+                           .Where(p => p.Id == user.Id)
+                           .Join(context.UserRoles, role => role.Id, userRole => userRole.UserId, (role, userRole) => role.Name)
+                           .ToListAsync<string>();
+
         if (user is null)
         {
             return new() 
@@ -44,7 +50,7 @@ public class AuthenticationService : IAuthenticationService
             };
         }
 
-        var claimsIdentity = GetClaimsIdentity(user);
+        var claimsIdentity = GetClaimsIdentity(user, roles);
 
         var configSec = configuration.GetSection("Identity");
 
@@ -72,7 +78,7 @@ public class AuthenticationService : IAuthenticationService
         };
     }
 
-    private ClaimsIdentity GetClaimsIdentity(ApplicationUser user)
+    private ClaimsIdentity GetClaimsIdentity(ApplicationUser user, List<string> roles)
     {
         List<Claim> claims = new();
 
@@ -81,6 +87,11 @@ public class AuthenticationService : IAuthenticationService
         claims.Add(new(ClaimTypes.NameIdentifier, user.Id));
 
         claims.Add(new(ClaimTypes.Surname, user.PersianName));
+
+        foreach (var role in roles)
+        {
+            claims.Add(new(ClaimTypes.Role, role));
+        }
 
         return new(claims);
     }
