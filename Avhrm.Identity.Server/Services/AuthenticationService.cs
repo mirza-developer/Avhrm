@@ -38,15 +38,21 @@ public class AuthenticationService : IAuthenticationService
                                 && p.PasswordHash == hashedPassword);
 
         var roles = await context.Roles
-                           .Where(p => p.Id == user.Id)
-                           .Join(context.UserRoles, role => role.Id, userRole => userRole.UserId, (role, userRole) => role.Name)
-                           .ToListAsync<string>();
+                           .Join(context.UserRoles, role => role.Id, userRole => userRole.RoleId, (role, userRole) =>
+                           new
+                           {
+                               RoleName = role.Name,
+                               UserId = userRole.UserId
+                           })
+                           .Where(p => p.UserId == user.Id)
+                           .Select(p => p.RoleName)
+                           .ToListAsync();
 
         if (user is null)
         {
-            return new() 
+            return new()
             {
-                Value = string.Empty 
+                Value = string.Empty
             };
         }
 
@@ -55,7 +61,7 @@ public class AuthenticationService : IAuthenticationService
         var configSec = configuration.GetSection("Identity");
 
         SecurityTokenDescriptor descriptor = new()
-        {             
+        {
             Issuer = configSec["Issuer"],
             Audience = configSec["Audience"],
             IssuedAt = DateTime.Now,
