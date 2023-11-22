@@ -17,6 +17,8 @@ public class AvhrmIdentityContext : IdentityDbContext<ApplicationUser>
         Database.Migrate();
     }
 
+    public DbSet<Permission> Permissions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

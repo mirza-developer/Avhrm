@@ -4,6 +4,7 @@ using Avhrm.Identity.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Avhrm.Identity.Server.Migrations
 {
     [DbContext(typeof(AvhrmIdentityContext))]
-    partial class AvhrmIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20231122070913_AddPermissionEntity")]
+    partial class AddPermissionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
