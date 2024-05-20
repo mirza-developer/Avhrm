@@ -55,6 +55,8 @@
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 		<RuntimeIdentifiers Condition="'$(AndroidPackageFormat)' == 'apk'">android-arm</RuntimeIdentifiers>
 		<MauiUseDefaultAotProfile Condition="Exists('custom.aprof')">false</MauiUseDefaultAotProfile>
+		<AndroidSigningKeyStore>avhrm.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>avhrm</AndroidSigningKeyAlias>
 	</PropertyGroup>
 
 	<ItemGroup>
