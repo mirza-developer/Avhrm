@@ -17,7 +17,7 @@
 		<ApplicationId>com.tadda.avhrm.mobile</ApplicationId>
 		<ApplicationIdGuid>23C65D77-DD69-4B3A-B412-AF7725521AE7</ApplicationIdGuid>
 
-		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
+		<UseInterpreter>True</UseInterpreter>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -52,16 +52,13 @@
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
 		<EnableLLVM>true</EnableLLVM>
+		<!--<RunAOTCompilation>False</RunAOTCompilation>-->
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 		<RuntimeIdentifiers Condition="'$(AndroidPackageFormat)' == 'apk'">android-arm</RuntimeIdentifiers>
 		<MauiUseDefaultAotProfile Condition="Exists('custom.aprof')">false</MauiUseDefaultAotProfile>
 		<AndroidSigningKeyStore>avhrm.keystore</AndroidSigningKeyStore>
 		<AndroidSigningKeyAlias>avhrm</AndroidSigningKeyAlias>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Content Remove="Properties\launchSettings.json" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Avhrm.UI.Shared\Avhrm.UI.Shared.csproj" />

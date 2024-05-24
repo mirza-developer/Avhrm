@@ -1,1 +1,2 @@
 dotnet publish -f net8.0-android -c Release -p:AndroidKeyStore=true -p:AndroidSigningKeyStore=avhrm.keystore -p:AndroidSigningKeyAlias=avhrm -p:AndroidSigningKeyPass=Rfid@244 -p:AndroidSigningStorePass=Rfid@244
+pause
