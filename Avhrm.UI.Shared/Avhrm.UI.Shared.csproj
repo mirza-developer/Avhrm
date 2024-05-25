@@ -19,11 +19,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.3" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.62.0" />
-		<PackageReference Include="Grpc.Net.Client.Web" Version="2.62.0" />
-		<PackageReference Include="BuildWebCompiler2022" Version="1.14.9.1">
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="8.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.5" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.63.0" />
+		<PackageReference Include="Grpc.Net.Client.Web" Version="2.63.0" />
+		<PackageReference Include="BuildWebCompiler2022" Version="1.14.10">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -54,6 +54,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Avhrm.Core\Avhrm.Core.csproj" />
 		<ProjectReference Include="..\Avhrm\Avhrm.Identity.UI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Condition=" '$(BlazorMode)' == 'BlazorHybrid' " Include="Microsoft.Maui.Essentials" Version="8.0.40" />
 	</ItemGroup>
 
 </Project>
