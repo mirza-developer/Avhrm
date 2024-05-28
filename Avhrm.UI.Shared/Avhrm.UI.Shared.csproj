@@ -57,7 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Condition=" '$(BlazorMode)' == 'BlazorHybrid' " Include="Microsoft.Maui.Essentials" Version="8.0.40" />
+		<PackageReference Condition=" '$(BlazorMode)' == 'BlazorHybrid' " Include="Microsoft.Maui.Essentials" Version="8.0.3" />
 	</ItemGroup>
 
 </Project>

@@ -1,67 +1,80 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-	<PropertyGroup>
-		<TargetFrameworks>net8.0-android</TargetFrameworks>
-		<!--;net7.0-ios-->
-		<OutputType>Exe</OutputType>
-		<RootNamespace>Avhrm.UI.Mobile</RootNamespace>
-		<UseMaui>true</UseMaui>
-		<SingleProject>true</SingleProject>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<EnableDefaultCssItems>false</EnableDefaultCssItems>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0-android</TargetFrameworks>
+<!--;net8.0-ios-->
+        <OutputType>Exe</OutputType>
+        <RootNamespace>Avhrm.UI.Mobile</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnableDefaultCssItems>false</EnableDefaultCssItems>
+        <Nullable>enable</Nullable>
 
-		<!-- Display name -->
-		<ApplicationTitle>Avhrm</ApplicationTitle>
+        <!-- Display name -->
+        <ApplicationTitle>Avizhe</ApplicationTitle>
 
-		<!-- App Identifier -->
-		<ApplicationId>com.tadda.avhrm.mobile</ApplicationId>
-		<ApplicationIdGuid>23C65D77-DD69-4B3A-B412-AF7725521AE7</ApplicationIdGuid>
+        <!-- App Identifier -->
+        <ApplicationId>com.tdda.avhrm</ApplicationId>
 
-		<UseInterpreter>True</UseInterpreter>
+		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
 
-		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
-	</PropertyGroup>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-ios'))">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-android'))">24.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+    <ItemGroup>
+        <!-- App Icon -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
-		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+        <!-- Splash Screen -->
+        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
-		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
-		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\*" />
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
 
-		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
-	</ItemGroup>
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
 
-	<ItemGroup>
+    <ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.3" />
+		<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="8.0.0" />
 		<PackageReference Include="MudBlazor" Version="6.19.1" />
-	</ItemGroup>
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="Serilog.Sinks.Xamarin" Version="1.0.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
+    </ItemGroup>
 
-	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
+    <ItemGroup>
+      <ProjectReference Include="..\Avhrm.UI.Shared\Avhrm.UI.Shared.csproj" />
+    </ItemGroup>
+	
+    <PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)' == 'Release'">
 		<EnableLLVM>true</EnableLLVM>
-		<!--<RunAOTCompilation>False</RunAOTCompilation>-->
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 		<RuntimeIdentifiers Condition="'$(AndroidPackageFormat)' == 'apk'">android-arm</RuntimeIdentifiers>
 		<MauiUseDefaultAotProfile Condition="Exists('custom.aprof')">false</MauiUseDefaultAotProfile>
 		<AndroidSigningKeyStore>avhrm.keystore</AndroidSigningKeyStore>
 		<AndroidSigningKeyAlias>avhrm</AndroidSigningKeyAlias>
+		<AndroidStripILAfterAOT>true</AndroidStripILAfterAOT>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Avhrm.UI.Shared\Avhrm.UI.Shared.csproj" />
-	</ItemGroup>
-
+	
+	 <ItemGroup Condition="$(TargetFramework.Contains('-android'))">
+        <AndroidAotProfile Condition="Exists('custom.aprof')" Include="custom.aprof" />
+    </ItemGroup>
 </Project>

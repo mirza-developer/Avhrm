@@ -12,7 +12,9 @@
                 <div class="app-all-container k-rtl">
                     <main>
                         <article class="content px-4">
-                            @Body
+                            <AppErrorBoundary>
+                                @Body
+                            </AppErrorBoundary>
                         </article>
                     </main>
                 </div>
