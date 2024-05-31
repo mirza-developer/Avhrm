@@ -10,9 +10,8 @@ namespace Avhrm.UI.Mobile;
 #if DEBUG
     UsesCleartextTraffic = true,
 #endif
-    AllowBackup = true,
-    SupportsRtl = true
-)]
+    AllowBackup = true
+  , SupportsRtl = true )]
 public class MainApplication : MauiApplication
 {
     public MainApplication(IntPtr handle, JniHandleOwnership ownership)

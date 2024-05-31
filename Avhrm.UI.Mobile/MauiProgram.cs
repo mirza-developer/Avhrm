@@ -5,6 +5,7 @@ using System.Reflection;
 using Serilog;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.Maui.Controls.Compatibility.Hosting;
 
 namespace Avhrm.UI.Mobile;
 
@@ -21,7 +22,7 @@ public static class MauiProgram
 
         builder.ConfigureLifecycleEvents(lifecycle =>
         {
-#if iOS 
+#if iOS
             lifecycle.AddiOS(ios =>
             {
                 bool HandleAppLink(Foundation.NSUserActivity? userActivity)

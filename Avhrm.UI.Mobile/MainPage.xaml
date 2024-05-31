@@ -6,7 +6,6 @@
     xmlns:b="clr-namespace:Microsoft.AspNetCore.Components.WebView.Maui;assembly=Microsoft.AspNetCore.Components.WebView.Maui"
     xmlns:client="clr-namespace:Avhrm.UI.Shared;assembly=Avhrm.UI.Shared"
     BackgroundColor="{DynamicResource PageBackgroundColor}"
-    Loaded="ContentPage_Loaded"
     NavigationPage.HasNavigationBar="False">
 
     <b:BlazorWebView
