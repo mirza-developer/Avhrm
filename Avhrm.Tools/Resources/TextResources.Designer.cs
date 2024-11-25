@@ -475,6 +475,16 @@ namespace Avhrm.Tools.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to دریافت اکسل گزارش کاری
+        ///.
+        /// </summary>
+        public static string APP_StringKeys_WorkingChallenge_Range {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_WorkingChallenge_Range", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ثبت گزارش کاری.
         /// </summary>
         public static string APP_StringKeys_WorkingReport_Add {

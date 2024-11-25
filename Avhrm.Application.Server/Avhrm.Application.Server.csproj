@@ -29,6 +29,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Contracts\" />
+	  <Folder Include="Features\WorkingReport\Queries\GetWorkReportByDateRangeAndUser\" />
 	</ItemGroup>
 	
 </Project>

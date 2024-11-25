@@ -1,0 +1,68 @@
+﻿@page "/workingreport/rangereport"
+
+
+<div class="page-header text-align-center">
+    @TextResources.APP_StringKeys_WorkingChallenge_Range
+</div>
+<div class="pages-workingreport-search text-align-center">
+    @if (IsMessageShown)
+    {
+        <MudAlert Severity="AlertSeverity"
+                  Variant="Variant.Filled"
+                  Class="rounded-0"
+                  ShowCloseIcon="true"
+                  CloseIconClicked="()=> IsMessageShown = false">
+            <ul>
+                @foreach (var text in MessageTexts)
+                {
+                    <li>
+                        @text
+                    </li>
+                }
+            </ul>
+        </MudAlert>
+    }
+    <EditForm Model="Request"
+              OnInvalidSubmit="OnInvalidSubmit"
+              OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="search-box">
+            <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Row="true" Spacing="2">
+                <div class="form-group" style="flex-grow: 1;">
+                    <MudSelect @bind-Value="Request.UserId"
+                               Label="@TextResources.APP_StringKeys_User"
+                               Variant="Variant.Outlined"
+                               Margin="Margin.Dense">
+                        @foreach (var user in ChildUsers)
+                        {
+                            <MudSelectItem Value="@user.Id">@user.PersianName (@user.UserName)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </div>
+                <div class="form-group" style="flex-grow: 1;">
+                    <MudDateRangePicker DateRangeChanged="OnDateRangeChanged"
+                                        ReadOnly="@(false)"
+                                        Clearable="@(true)"
+                                        Placeholder="Range"
+                                        Culture="@MudblazorDatePickerHelper.GetPersianCulture()"
+                                        TitleDateFormat="dddd, dd MMMM"
+                                        Variant="Variant.Outlined"
+                                        Margin="Margin.Dense"
+                                        PickerVariant="PickerVariant.Dialog" />
+                </div>
+                <button type="submit"
+                        class="btn btn-success"
+                        style="width: 45px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                    <MaterialIcon IconName="@MaterialIconsHelper.Search"></MaterialIcon>
+                </button>
+            </MudStack>
+        </div>
+    </EditForm>
+    <MudOverlay Visible="IsLoading"
+                DarkBackground="true">
+        @TextResources.APP_StringKeys_Loading
+        <MudProgressCircular Color="Color.Primary"
+                             Size="Size.Large"
+                             Indeterminate="true" />
+    </MudOverlay>
+</div>
