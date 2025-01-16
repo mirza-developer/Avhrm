@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Avhrm.Infrastructure.Client;
+using MediatR;
 
 namespace Avhrm.UI.Shared.Pages.Account;
 public partial class AddUser
@@ -17,6 +18,7 @@ public partial class AddUser
 
     [Inject] public ApiHandler Api { get; set; }
     [Inject] public IMapper Mapper { get; set; }
+    [Inject] public NotificationService Notification { get; set; }
 
     [CascadingParameter] public ComponentsContext Context { get; set; }
 
@@ -69,24 +71,12 @@ public partial class AddUser
 
         if (result)
         {
-            AlertSeverity = Severity.Success;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Success
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Success, NotificationType.Success);
         }
         else
         {
-            AlertSeverity = Severity.Error;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Failed
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Failed, NotificationType.Error);
         }
-
-        IsMessageShown = true;
 
         IsLoading = false;
     }

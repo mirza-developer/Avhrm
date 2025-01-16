@@ -14,6 +14,7 @@ public partial class Login
     [Inject] public AvhrmClientAuthenticationStateProvider ClientAuthProvider { get; set; }
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public ApiHandler Api { get; set; }
+    [Inject] public NotificationService Notification { get; set; }
 
     [CascadingParameter] public ComponentsContext Context { get; set; }
 
@@ -42,11 +43,7 @@ public partial class Login
 
         if (result.Token.HasNoValue())
         {
-            IsMessageShown = true;
-
-            MessageTexts.Clear();
-
-            MessageTexts.Add(TextResources.APP_StringKeys_Error_Login);
+            Notification.AddNotification(TextResources.APP_StringKeys_Error_Login, NotificationType.Error);
 
             IsLoading = false;
 

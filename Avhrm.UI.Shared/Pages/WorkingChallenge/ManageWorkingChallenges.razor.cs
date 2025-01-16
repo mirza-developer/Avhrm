@@ -1,4 +1,5 @@
 ﻿using Avhrm.Infrastructure.Client;
+using MediatR;
 
 namespace Avhrm.UI.Shared.Pages.WorkingChallenge;
 public partial class ManageWorkingChallenges
@@ -13,6 +14,7 @@ public partial class ManageWorkingChallenges
     public InsertWorkChallengeCommand Command = new();
 
     [Inject] public ApiHandler Api { get; set; }
+    [Inject] public NotificationService Notification { get; set; }
 
     [CascadingParameter] public ComponentsContext Context { get; set; }
 
@@ -44,23 +46,15 @@ public partial class ManageWorkingChallenges
 
         if (result)
         {
-            AlertSeverity = Severity.Success;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Success
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Success
+                , NotificationType.Success);
 
             AllWorkChallenges.RemoveAll(x => x.Id == id);   
         }
         else
         {
-            AlertSeverity = Severity.Error;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Failed
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Failed
+                , NotificationType.Error);
         }
 
         IsLoading = false;
@@ -81,21 +75,13 @@ public partial class ManageWorkingChallenges
             AllWorkChallenges = (await Api.SendJsonAsync<GetAllWorkChallengeVm>(HttpMethod.Get
             , "WorkChallenge/GetAll")).Value.Data;
 
-            AlertSeverity = Severity.Success;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Success
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Success
+                , NotificationType.Success);
         }
         else
         {
-            AlertSeverity = Severity.Error;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Failed
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Failed
+                , NotificationType.Error);
         }
 
         IsLoading = false;

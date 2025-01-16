@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Avhrm.Identity.UI.Services;
 using Avhrm.Infrastructure.Client;
+using MediatR;
 using Microsoft.AspNetCore.Components.Web;
 
 namespace Avhrm.UI.Shared.Pages.WorkingReport;
@@ -42,6 +43,8 @@ public partial class Add
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AvhrmClientAuthenticationStateProvider AuthState { get; set; }
 
+    [Inject] public NotificationService Notification { get; set; }
+
     [CascadingParameter] public ComponentsContext Context { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -58,11 +61,9 @@ public partial class Add
 
         Customers = (await Api.SendJsonAsync<GetAllCustomersVm>(HttpMethod.Get, "Customer/GetAll")).Value.Data;
 
-        WorkChallenges = (await Api.SendJsonAsync<GetAllWorkChallengeVm>(HttpMethod.Get, "WorkChallenge/GetAll"))
-                                   .Value
-                                   .Data
-                                   .Where(p=> p.DepartmentId == int.Parse(user.GetDepartmentId()))
-                                   .ToList();
+        WorkChallenges = (await Api.SendJsonAsync<GetAllWorkChallengeVm>(HttpMethod.Get, "WorkChallenge/GetAll")).Value.Data
+            .Where(p=> p.DepartmentId == int.Parse(user.GetDepartmentId()))
+            .ToList();
 
         Command.PersianDate = DateTime.Now.Date;
 
@@ -118,33 +119,23 @@ public partial class Add
 
         if (result)
         {
-            AlertSeverity = Severity.Success;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Success
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Success
+                , NotificationType.Success);
         }
         else
         {
-            AlertSeverity = Severity.Error;
-
-            MessageTexts = new()
-            {
-                TextResources.APP_StringKeys_Message_Failed
-            };
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Failed
+                , NotificationType.Error);
         }
 
         IsLoading = false;
-
-        IsMessageShown = true;
     }
 
     public async Task OnInvalidSubmit(EditContext context)
     {
         MessageTexts.Clear();
 
-        foreach (var valid in context.GetValidationMessages())
+        foreach (string valid in context.GetValidationMessages())
         {
             MessageTexts.Add(valid);
         }
@@ -165,9 +156,17 @@ public partial class Add
 
         if (result)
         {
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Success
+                , NotificationType.Success);
+
             NavigationManager.NavigateTo("/workingreport/search");
 
             return;
+        }
+        else
+        {
+            Notification.AddNotification(TextResources.APP_StringKeys_Message_Failed
+               , NotificationType.Error);
         }
     }
 }

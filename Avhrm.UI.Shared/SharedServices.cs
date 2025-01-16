@@ -17,5 +17,7 @@ public static class SharedServices
         services.AddMudServices();
 
         services.AddClientApplicationServices();
+
+        services.AddScoped<NotificationService>();
     }
 }
