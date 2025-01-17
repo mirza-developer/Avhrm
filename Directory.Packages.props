@@ -49,5 +49,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageVersion>
+	<PackageVersion Include="BuildBundlerMinifier2022" Version="2.9.11" />
   </ItemGroup>
 </Project>
