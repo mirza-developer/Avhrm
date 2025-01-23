@@ -19,6 +19,10 @@
                             </article>
                         </main>
                     </div>
+                    @if (Context.ClientType)
+                    {
+                        
+                    }
                     @if (Context.IsBackButtonShown)
                     {
                         <button class="floating-button-left" @onclick="OnBackClick">

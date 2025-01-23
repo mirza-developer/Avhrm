@@ -7,6 +7,10 @@ public class ComponentsContext
 
     public Action? OnChange;
 
+    public int? ViewportWidth { get; set; }
+
+    public ClientType ClientType => ViewportWidth < 768 ? ClientType.Mobile : ClientType.Web;
+
     public bool IsDrawerOpen
     {
         get => _isDrawerOpen;
