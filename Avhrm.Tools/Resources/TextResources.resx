@@ -267,4 +267,10 @@
   <data name="APP_StringKeys_User" xml:space="preserve">
     <value>کاربر</value>
   </data>
+  <data name="APP_StringKeys_View_InfoFormat" xml:space="preserve">
+    <value>{first_item}-{last_item} از {all_items}</value>
+  </data>
+  <data name="APP_StringKeys_View_AllItemsText" xml:space="preserve">
+    <value>همه نتایج</value>
+  </data>
 </root>

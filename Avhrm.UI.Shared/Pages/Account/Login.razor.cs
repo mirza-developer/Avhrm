@@ -1,13 +1,10 @@
-﻿using Avhrm.Application.Client;
-using Avhrm.Identity.UI.Services;
+﻿using Avhrm.Identity.UI.Services;
 using Avhrm.Infrastructure.Client;
 
 namespace Avhrm.UI.Shared.Pages.Account;
 public partial class Login
 {
-    public bool IsMessageShown = false;
     public bool IsLoading = false;
-    public List<string> MessageTexts = new();
 
     public GetUserLoginQuery Request { get; set; } = new();
 
@@ -59,13 +56,9 @@ public partial class Login
 
     public async Task OnInvalidSubmit(EditContext context)
     {
-        IsMessageShown = true;
-
-        MessageTexts.Clear();
-
         foreach (var valid in context.GetValidationMessages())
         {
-            MessageTexts.Add(valid); 
+            Notification.AddNotification(valid, NotificationType.Error);
         }
     }
 }

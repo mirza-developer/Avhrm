@@ -8,7 +8,9 @@ public partial class ManageUser
     public List<string> MessageTexts = new();
     public List<GetAllUsersDto> Users;
 
-    [Inject] private ApiHandler Api { get; set; }    
+    [Inject] private ApiHandler Api { get; set; }
+
+    [CascadingParameter] public ComponentsContext Context { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

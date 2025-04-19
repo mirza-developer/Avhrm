@@ -457,6 +457,24 @@ namespace Avhrm.Tools.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to همه نتایج.
+        /// </summary>
+        public static string APP_StringKeys_View_AllItemsText {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_View_AllItemsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {first_item}-{last_item} از {all_items}.
+        /// </summary>
+        public static string APP_StringKeys_View_InfoFormat {
+            get {
+                return ResourceManager.GetString("APP_StringKeys_View_InfoFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to چالش کاری.
         /// </summary>
         public static string APP_StringKeys_WorkChallenge {

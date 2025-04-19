@@ -1,53 +1,107 @@
 ﻿@page "/account/manage"
 @namespace Avhrm.UI.Shared.Pages
-@using Microsoft.AspNetCore.Components.Web.Virtualization
 
 <div class="page-account-manage">
-    <div class="page-header text-align-center">
-        @TextResources.APP_StringKeys_Account_ManageUser
-    </div>
-    <div class="text-align-center"
-         style="margin-top:30px;">
-        <div class="div-ver-overflow">
+    <MudPaper Style="margin-top: 20px;">
+        <MudCard>
             @if (Users is not null)
             {
-                <Virtualize Items="Users"
-                            ItemSize="10"
-                            OverscanCount="10">
-                    <MudCard Outlined="true">
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@context.PersianName</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <MudText Typo="Typo.body2">
-                                @TextResources.APP_StringKeys_Department :
-                                @context.DepartmentName
-                            </MudText>
-                        </MudCardContent>
-                        <MudCardActions Class="text-align-center">
-                            <NavLink href="@($"/account/edit/{context.Username}")"
+                @if (Context.ClientType == ClientType.Mobile)
+                {
+                    <MudCardHeader Class="text-align-center">
+                        <MudText Typo="Typo.h5">@TextResources.APP_StringKeys_Account_ManageUser</MudText>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div class="text-align-center"
+                             style="margin-top:30px;">
+                            <div class="div-ver-overflow">
+                                <Virtualize Items="Users"
+                                            ItemSize="10"
+                                            OverscanCount="10">
+                                    <MudCard Outlined="true">
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.h6">@context.PersianName</MudText>
+                                            </CardHeaderContent>
+                                        </MudCardHeader>
+                                        <MudCardContent>
+                                            <MudText Typo="Typo.body2">
+                                                @TextResources.APP_StringKeys_Department :
+                                                @context.DepartmentName
+                                            </MudText>
+                                        </MudCardContent>
+                                        <MudCardActions Class="text-align-center">
+                                            <NavLink href="@($"/account/edit/{context.Username}")"
+                                                     Match="NavLinkMatch.All"
+                                                     class="btn btn-secondary">
+                                                <MaterialIcon IconName="@MaterialIconsHelper.Edit"></MaterialIcon>
+                                            </NavLink>
+                                        </MudCardActions>
+                                    </MudCard>
+                                </Virtualize>
+                            </div>
+                            <NavLink href="/account/add"
                                      Match="NavLinkMatch.All"
-                                     class="btn btn-secondary">
-                                <MaterialIcon IconName="@MaterialIconsHelper.Edit"></MaterialIcon>
+                                     class="btn btn-primary page-floating-button-bottom">
+                                <MaterialIcon IconName="@MaterialIconsHelper.Add"></MaterialIcon>
                             </NavLink>
-                        </MudCardActions>
-                    </MudCard>
-                </Virtualize>
+                        </div>
+                    </MudCardContent>
+                }
+                else
+                {
+                    <div class="page-container-actions-web" style="margin-bottom: 10px;display: flex;gap: 5px;">
+                        <MudTooltip Text="@TextResources.APP_StringKeys_Add">
+                            <NavLink href="/account/add"
+                                     Match="NavLinkMatch.All"
+                                     class="btn btn-primary page-floating-button-bottom">
+                                <MaterialIcon IconName="@MaterialIconsHelper.Add"></MaterialIcon>
+                            </NavLink>
+                        </MudTooltip>
+                    </div>
+                    <MudDataGrid Items="@Users"
+                                 Dense="true"
+                                 Bordered="true"
+                                 Hover="true"
+                                 Striped="true">
+                        <Columns>
+                            <PropertyColumn Property="x => x.PersianName"
+                                            Title="@TextResources.APP_StringKeys_Account_ManageUser"
+                                            HeaderClass="mud-datagrid-header mud-datagrid-header-bordered"
+                                            HeaderStyle="background-color: #007bff; color: white; border-left: 1px solid white;" />
+
+                            <PropertyColumn Property="x => x.DepartmentName"
+                                            Title="@TextResources.APP_StringKeys_Department"
+                                            HeaderClass="mud-datagrid-header mud-datagrid-header-bordered"
+                                            HeaderStyle="background-color: #007bff; color: white; border-left: 1px solid white;" />
+
+                            <TemplateColumn HeaderClass="mud-datagrid-header"
+                                            HeaderStyle="background-color: #007bff; color: white; border-left: 1px solid white;">
+                                <CellTemplate>
+                                    <NavLink href="@($"/account/edit/{context.Item.Username}")"
+                                             Match="NavLinkMatch.All"
+                                             class="btn btn-secondary">
+                                        <MaterialIcon IconName="@MaterialIconsHelper.Edit"></MaterialIcon>
+                                    </NavLink>
+                                </CellTemplate>
+                            </TemplateColumn>
+                        </Columns>
+                        <PagerContent>
+                            <MudDataGridPager PageSizeSelector="false"
+                                              InfoFormat="@TextResources.APP_StringKeys_View_InfoFormat"
+                                              AllItemsText="@TextResources.APP_StringKeys_View_AllItemsText" />
+                        </PagerContent>
+                    </MudDataGrid>
+
+                }
             }
-        </div>
-        <NavLink href="/account/add"
-                 Match="NavLinkMatch.All"
-                 class="btn btn-primary page-floating-button-bottom">
-            <MaterialIcon IconName="@MaterialIconsHelper.Add"></MaterialIcon>
-        </NavLink>
-        <MudOverlay Visible="IsLoading"
-                    DarkBackground="true">
-            @TextResources.APP_StringKeys_Loading
-            <MudProgressCircular Color="Color.Primary"
-                                 Size="Size.Large"
-                                 Indeterminate="true" />
-        </MudOverlay>
-    </div>
+        </MudCard>
+    </MudPaper>
 </div>
+<MudOverlay Visible="IsLoading"
+            DarkBackground="true">
+    @TextResources.APP_StringKeys_Loading
+    <MudProgressCircular Color="Color.Primary"
+                         Size="Size.Large"
+                         Indeterminate="true" />
+</MudOverlay>

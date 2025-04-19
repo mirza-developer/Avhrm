@@ -1,5 +1,6 @@
 ﻿using Avhrm.Identity.UI.Services;
 using Microsoft.AspNetCore.Components.Routing;
+using MudBlazor.Services;
 
 namespace Avhrm.UI.Shared;
 public partial class MainLayout
@@ -9,17 +10,22 @@ public partial class MainLayout
     private string Point;
 
     public ComponentsContext Context { get; set; } = new();
+    Guid IBrowserViewportObserver.Id { get; } = Guid.NewGuid();
 
     [Inject] public NavigationManager NavigationManager { get; set; }
     [Inject] public AvhrmClientAuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject] public IJSRuntime JSRuntime { get; set; }
+    [Inject] public IBrowserViewportService BrowserViewportService { get; set; }
+    [Inject] public NotificationService NotificationService { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await SetWidth();
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
         }
+
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     protected override async Task OnInitializedAsync()
@@ -38,13 +44,13 @@ public partial class MainLayout
         }
 
         Context.OnChange += StateHasChanged;
+
+        NotificationService.Context = Context;
     }
 
     private async void NavigationManager_LocationChanged(object? sender, LocationChangedEventArgs e)
     {
         Context.IsDrawerOpen = false;
-
-        await SetWidth();
 
         StateHasChanged();
     }
@@ -84,8 +90,19 @@ public partial class MainLayout
         await JSRuntime.InvokeVoidAsync("history.back");
     }
 
-    private async Task SetWidth()
+    public async ValueTask DisposeAsync() => await BrowserViewportService.UnsubscribeAsync(this);
+
+
+    ResizeOptions IBrowserViewportObserver.ResizeOptions { get; } = new()
     {
-        Context.ViewportWidth = await JSRuntime.InvokeAsync<int>("getViewportWidth");
+        ReportRate = 50,
+        NotifyOnBreakpointOnly = false
+    };
+
+    Task IBrowserViewportObserver.NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        Context.ViewportWidth = browserViewportEventArgs.BrowserWindowSize.Width;
+
+        return InvokeAsync(StateHasChanged);
     }
 }

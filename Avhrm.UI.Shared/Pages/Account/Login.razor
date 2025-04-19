@@ -1,23 +1,6 @@
 ﻿@page "/account/login"
 
 <div class="pages-account-login text-align-center">
-    @if (IsMessageShown)
-    {
-        <MudAlert Severity="Severity.Error"
-                  Variant="Variant.Filled"
-                  Class="rounded-0"
-                  ShowCloseIcon="true"
-                  CloseIconClicked="()=> IsMessageShown = false">
-            <ul>
-                @foreach (var text in MessageTexts)
-                {
-                    <li>
-                        @text
-                    </li>
-                }
-            </ul>
-        </MudAlert>
-    }
     <EditForm Model="Request"
               OnValidSubmit="OnValidSubmit"
               OnInvalidSubmit="OnInvalidSubmit">
@@ -38,16 +21,17 @@
             </MudTextField>
         </div>
         <button class="btn btn-primary page-floating-button-bottom"
-                    type="submit">
-                <MaterialIcon IconName="@MaterialIconsHelper.Login"></MaterialIcon>
-            </button>
-        
+                type="submit">
+            <MaterialIcon IconName="@MaterialIconsHelper.Login"></MaterialIcon>
+        </button>
     </EditForm>
     <MudOverlay Visible="IsLoading"
                 DarkBackground="true">
-        @TextResources.APP_StringKeys_Loading
-        <MudProgressCircular Color="Color.Primary"
-                             Size="Size.Large"
-                             Indeterminate="true" />
+        <div class="loading-container">
+            @TextResources.APP_StringKeys_Loading
+            <MudProgressCircular Color="Color.Primary"
+                                 Size="@(Context.ClientType == ClientType.Mobile ? Size.Small : Size.Large)"
+                                 Indeterminate="true" />
+        </div>
     </MudOverlay>
 </div>
