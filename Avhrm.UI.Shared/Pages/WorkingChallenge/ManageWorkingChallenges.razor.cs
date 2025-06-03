@@ -1,13 +1,9 @@
 ﻿using Avhrm.Infrastructure.Client;
-using MediatR;
 
 namespace Avhrm.UI.Shared.Pages.WorkingChallenge;
 public partial class ManageWorkingChallenges
 {
-    public bool IsMessageShown = false;
     public bool IsLoading = false;
-    public List<string> MessageTexts = new();
-    public Severity AlertSeverity = Severity.Error;
     public List<GetAllDepartmentDto> Departments = new();
     public List<GetAllWorkChallengeDto> AllWorkChallenges;
     public List<GetAllWorkChallengeDto> ShownWorkChallenges=new();
@@ -85,21 +81,13 @@ public partial class ManageWorkingChallenges
         }
 
         IsLoading = false;
-
-        IsMessageShown = true;
     }
 
     public async Task OnInvalidSubmit(EditContext context)
     {
-        MessageTexts.Clear();
-
         foreach (var valid in context.GetValidationMessages())
         {
-            MessageTexts.Add(valid);
+            Notification.AddNotification(valid, NotificationType.Error);
         }
-
-        AlertSeverity = Severity.Error;
-
-        IsMessageShown = true;
     }
 }
